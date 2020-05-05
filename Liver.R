@@ -4,8 +4,7 @@ library(scran)
 library(sqldf)
 
 #导入数据
-dat = read.delim("C:/Users/Administrator/Desktop/毕设/data/FACS/Liver-counts.csv", 
-                 sep=",",header=TRUE)
+dat = read.delim("Liver-counts.csv", sep=",",header=TRUE)
 dim(dat)
 
 
@@ -34,7 +33,7 @@ rho<- list(Hepatocyte = c("Acly", "Alb", "Apoa1", "Asl", "Ass1", "Cyp2e1"
            B_cell = c("Cd22"),
            Natural_Killer_cell = c("Cxcr6")
            )
-
+#优化后的标记基因
 rho<- list(Hepatocyte = c("Acly", "Alb", "Apoa1", "Asl", "Ass1", "Cyp2e1"
                           , "Cyp2f2"),
            Kupffer_cell = c("Clec4f", "Irf7", "Spic","Cd68"),
@@ -69,20 +68,18 @@ pheatmap::pheatmap(cellprobs(fit))
 
 
 #导出数据
-write.csv(Cell_Types,file="C:/Users/Administrator/Desktop/Liver_out.csv")
+write.csv(Cell_Types,file="Liver_out.csv")
 rownames(Cell_Probs)<-colnames(sce)
-write.csv(Cell_Probs,file="C:/Users/Administrator/Desktop/Liver_out_probs.csv")
+write.csv(Cell_Probs,file="Liver_out_probs.csv")
 
 #再次筛选
-Liver_true = read.delim("C:/Users/Administrator/Desktop/Liver.csv",
-                        sep=",",header=TRUE)
+Liver_true = read.delim("Liver.csv",sep=",",header=TRUE)
 
-Liver_test = read.delim("C:/Users/Administrator/Desktop/Liver_out_probs.csv", 
-                        sep=",",header=TRUE)
+Liver_test = read.delim("Liver_out_probs.csv",sep=",",header=TRUE)
 
 Liver <- sqldf("select * from Liver_true true,Liver_test test where test.Cell = true.Cell")
 
-write.csv(Liver,file="C:/Users/Administrator/Desktop/Liver_out_out.csv")
+write.csv(Liver,file="Liver_out_out.csv")
 
 #计算F1分数
 f1_fun(Liver[,2],Liver[,4])

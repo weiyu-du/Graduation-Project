@@ -4,8 +4,7 @@ library(scran)
 library(sqldf)
 
 #导入数据
-dat = read.delim("C:/Users/Administrator/Desktop/毕设/data/FACS/Brain_Neurons-counts.csv", 
-                 sep=",",header=TRUE)
+dat = read.delim("Brain_Neurons-counts.csv",sep=",",header=TRUE)
 dim(dat)
 
 
@@ -29,22 +28,15 @@ sce<-normalize(sce)
 print(sce)
 
 #标记基因
-rho<- list(Oligodendrocyte = t(read.delim("C:/Users/Administrator/Desktop/Oligodendrocyte_Brain.csv", 
-                                        sep=",",header=TRUE)),
-           Neuron = t(read.delim("C:/Users/Administrator/Desktop/Neuron_Brain.csv", 
-                                 sep=",",header=TRUE)),
-           Endothelial_cell = t(read.delim("C:/Users/Administrator/Desktop/Endothelial cell_Brain.csv", 
-                                           sep=",",header=TRUE)),
-           Bergmann_glial_cell = t(read.delim("C:/Users/Administrator/Desktop/Bergmann_glial_cell_Brain.csv", 
-                                              sep=",",header=TRUE))
+rho<- list(Oligodendrocyte = t(read.delim("Oligodendrocyte_Brain.csv",sep=",",header=TRUE)),
+           Neuron = t(read.delim("Neuron_Brain.csv",sep=",",header=TRUE)),
+           Endothelial_cell = t(read.delim("Endothelial cell_Brain.csv",sep=",",header=TRUE)),
+           Bergmann_glial_cell = t(read.delim("Bergmann_glial_cell_Brain.csv",sep=",",header=TRUE))
 )
 
-rho<- list(Oligodendrocyte = t(read.delim("C:/Users/Administrator/Desktop/Oligodendrocyte_Brain.csv", 
-                                          sep=",",header=TRUE)),
-           Neuron = t(read.delim("C:/Users/Administrator/Desktop/Neuron_Brain.csv", 
-                                 sep=",",header=TRUE)),
-           Endothelial_cell = t(read.delim("C:/Users/Administrator/Desktop/Endothelial cell_Brain.csv", 
-                                           sep=",",header=TRUE))
+rho<- list(Oligodendrocyte = t(read.delim("Oligodendrocyte_Brain.csv",sep=",",header=TRUE)),
+           Neuron = t(read.delim("Neuron_Brain.csv",sep=",",header=TRUE)),
+           Endothelial_cell = t(read.delim("/Endothelial cell_Brain.csv",sep=",",header=TRUE))
 )
 print(str(rho))
 rho <- marker_list_to_mat(rho)
@@ -75,20 +67,18 @@ Cell_Probs<-cellprobs(fit)
 pheatmap::pheatmap(cellprobs(fit),cluster_row = FALSE)
 
 #导出数据
-write.csv(Cell_Types,file="C:/Users/Administrator/Desktop/Brain_out.csv")
+write.csv(Cell_Types,file="Brain_out.csv")
 rownames(Cell_Probs)<-colnames(sce)
-write.csv(Cell_Probs,file="C:/Users/Administrator/Desktop/Brain_out_probs.csv")
+write.csv(Cell_Probs,file="Brain_out_probs.csv")
 
 #再次筛选
-Brain_true = read.delim("C:/Users/Administrator/Desktop/Brain.csv",
-                        sep=",",header=TRUE)
+Brain_true = read.delim("Brain.csv",sep=",",header=TRUE)
 
-Brain_test = read.delim("C:/Users/Administrator/Desktop/Brain_out_probs.csv", 
-                        sep=",",header=TRUE)
+Brain_test = read.delim("Brain_out_probs.csv", sep=",",header=TRUE)
 
 Brain <- sqldf("select * from Brain_true true,Brain_test test where test.Cell = true.Cell")
 
-write.csv(Brain,file="C:/Users/Administrator/Desktop/Brain_out_out.csv")
+write.csv(Brain,file="Brain_out_out.csv")
 
 #计算F1分数
 f1_fun(Brain[,2],Brain[,4])

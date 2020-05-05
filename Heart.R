@@ -1,10 +1,10 @@
 library(SingleCellExperiment)
 library(cellassign)
 library(scran)
+library(sqldf)
 
 #导入数据
-dat = read.delim("C:/Users/Administrator/Desktop/毕设/data/FACS/Heart-counts.csv", 
-                 sep=",",header=TRUE)
+dat = read.delim("Heart-counts.csv", sep=",",header=TRUE)
 dim(dat)
 
 
@@ -59,21 +59,19 @@ Cell_Probs<-cellprobs(fit)
 pheatmap::pheatmap(cellprobs(fit),cluster_row = FALSE)
 
 #导出数据
-write.csv(Cell_Types,file="C:/Users/Administrator/Desktop/Heart_out.csv")
+write.csv(Cell_Types,file="Heart_out.csv")
 rownames(Cell_Probs)<-colnames(sce)
-write.csv(Cell_Probs,file="C:/Users/Administrator/Desktop/Heart_out_probs.csv")
+write.csv(Cell_Probs,file="/Heart_out_probs.csv")
 
 
 #再次筛选
-Heart_true = read.delim("C:/Users/Administrator/Desktop/Heart.csv",
-                        sep=",",header=TRUE)
+Heart_true = read.delim("Heart.csv",sep=",",header=TRUE)
 
-Heart_test = read.delim("C:/Users/Administrator/Desktop/Heart_out_probs.csv", 
-                        sep=",",header=TRUE)
+Heart_test = read.delim("Heart_out_probs.csv",sep=",",header=TRUE)
 
 Heart <- sqldf("select * from Heart_true true,Heart_test test where test.Cell = true.Cell")
 
-write.csv(Heart,file="C:/Users/Administrator/Desktop/Heart_out_out.csv")
+write.csv(Heart,file="Heart_out_out.csv")
 
 #计算F1分数
 f1_fun(Heart[,2],Heart[,4])
