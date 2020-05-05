@@ -2,13 +2,13 @@
 Part of the Graduation Design code.  
 
 # Algorithm
-The R package CellAssign is used for calculation.  
+The R package CellAssign（https://github.com/Irrationone/cellassign） is used for calculation.  
 
 # Data Source
 The gene expression data were derived from the data of mouse liver cells, heart cells and brain neurons in the **Tabula Muris** project.  
 Marker genes data from **CellMarker database**.  
 
-
+  
 # 毕业设计
 毕设相关代码.  
 
