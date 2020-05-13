@@ -56,6 +56,7 @@ print(fit)
 Cell_Types<-celltypes(fit)
 Cell_Probs<-cellprobs(fit)
 
+#热图绘制
 pheatmap::pheatmap(cellprobs(fit),cluster_row = FALSE)
 
 #导出数据
